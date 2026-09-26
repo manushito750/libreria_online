@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Librerías Andinas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Karla:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    box-sizing:border-box;
+    padding-top:env(safe-area-inset-top,0px);
+    padding-bottom:env(safe-area-inset-bottom,0px);
+    --ink:#24312E; --parchment:#EFE6D8; --gold:#B8862B; --terracota:#935A3C; --verde:#4F6F52; --text:#2A2521;
+    --card:#F7F1E5; --border:rgba(42,37,33,.16);
+  }
+  html{ scroll-padding-top:env(safe-area-inset-top,0px); }
+  *{box-sizing:border-box;}
+  body{
+    margin:0; background:var(--parchment); color:var(--text);
+    font-family:'Karla',sans-serif; line-height:1.55;
+  }
+  @media (prefers-color-scheme: dark){
+    :root:not([data-theme="light"]){ --parchment:#1B2220; --text:#EAE3D6; --card:#232B27; --border:rgba(234,227,214,.16); }
+  }
+  :root[data-theme="dark"]{ --parchment:#1B2220; --text:#EAE3D6; --card:#232B27; --border:rgba(234,227,214,.16); }
+
+  h1,h2,h3{ font-family:'Fraunces',serif; margin:0; color:var(--ink); font-weight:600; }
+  @media (prefers-color-scheme: dark){ :root:not([data-theme="light"]) h1, :root:not([data-theme="light"]) h2, :root:not([data-theme="light"]) h3{ color:#EAE3D6; } }
+  :root[data-theme="dark"] h1, :root[data-theme="dark"] h2, :root[data-theme="dark"] h3{ color:#EAE3D6; }
+
+  p{ max-width:60ch; }
+  header.hero{
+    display:flex; flex-wrap:wrap; align-items:center; gap:2rem;
+    padding:3.5rem 6vw 3rem; overflow:hidden; position:relative;
+  }
+  .hero-text{ flex:1 1 320px; z-index:2; }
+  .eyebrow{ color:var(--terracota); font-size:.95rem; margin-bottom:.6rem; }
+  .hero-text h1{ font-size:clamp(2.1rem,4.5vw,3.4rem); line-height:1.08; }
+  .hero-text p{ margin-top:1.1rem; font-size:1.05rem; }
+  .peaks{ flex:0 0 260px; height:200px; position:relative; }
+  .peaks svg{ width:100%; height:100%; }
+  nav{ margin-top:1.6rem; display:flex; gap:1.2rem; flex-wrap:wrap; }
+  nav a{ color:var(--verde); text-decoration:none; border-bottom:1px solid var(--border); font-weight:500; }
+  section{ padding:3rem 6vw; }
+  section.alt{ background:var(--card); }
+  .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.4rem; margin-top:1.6rem; }
+  .grid .item{ padding:1.1rem 1.2rem; border-left:3px solid var(--terracota); background:var(--card); }
+  .grid .item h3{ font-size:1.05rem; margin-bottom:.35rem; }
+
+  /* Chatbot */
+  .chat-wrap{ margin-top:1.8rem; display:grid; gap:1.6rem; grid-template-columns:1fr; }
+  @media(min-width:760px){ .chat-wrap{ grid-template-columns:260px 1fr; } }
+  .faq-list{ display:flex; flex-direction:column; gap:.5rem; }
+  .faq-btn{
+    text-align:left; padding:.6rem .8rem; border:1px solid var(--border); background:var(--card);
+    color:var(--text); border-radius:2px; cursor:pointer; font-family:inherit; font-size:.92rem;
+  }
+  .faq-btn:hover{ border-color:var(--terracota); }
+  .faq-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
+  .chat-panel{ background:var(--card); border:1px solid var(--border); padding:1.2rem 1.3rem; min-height:220px; display:flex; flex-direction:column; gap:.7rem; }
+  .bubble{ padding:.7rem .9rem; border-radius:2px; max-width:44ch; }
+  .bubble.user{ align-self:flex-end; background:var(--verde); color:#fff; }
+  .bubble.bot{ align-self:flex-start; background:var(--parchment); border:1px solid var(--border); }
+  .chat-input-row{ margin-top:auto; display:flex; gap:.5rem; }
+  .chat-input-row input{
+    flex:1; padding:.6rem .8rem; border:1px solid var(--border); background:transparent; color:var(--text); font-family:inherit;
+  }
+  .chat-input-row button{
+    padding:.6rem 1rem; background:var(--ink); color:#EFE6D8; border:none; cursor:pointer; font-family:inherit;
+  }
+
+  /* Contact */
+  form.contact{ margin-top:1.6rem; display:flex; flex-direction:column; gap:.9rem; max-width:480px; }
+  form.contact input, form.contact textarea{
+    padding:.65rem .8rem; border:1px solid var(--border); background:var(--card); color:var(--text);
+    font-family:inherit; font-size:.98rem; resize:vertical;
+  }
+  .send-row{ display:flex; gap:.8rem; flex-wrap:wrap; }
+  .send-row button{
+    padding:.65rem 1.1rem; border:none; cursor:pointer; font-family:inherit; font-weight:500; color:#fff;
+  }
+  .send-row button.wa{ background:var(--verde); }
+  .send-row button.mail{ background:var(--terracota); }
+  .hint{ font-size:.85rem; opacity:.75; }
+  footer{ padding:2rem 6vw 3rem; font-size:.9rem; opacity:.8; }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="hero-text">
+    <div class="eyebrow">Librería peruana</div>
+    <h1>Librerías Andinas</h1>
+    <p>Libros para la sierra, la costa y la selva: literatura peruana, textos escolares y ediciones andinas, con envíos a todo el país.</p>
+    <nav>
+      <a href="#chat">Preguntar al asistente</a>
+      <a href="#contacto">Escribirnos</a>
+    </nav>
+  </div>
+  <div class="peaks" aria-hidden="true">
+    <svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,200 60,60 110,140 150,40 210,150 260,90 260,200" fill="var(--ink)" opacity="0.85"/>
+      <polygon points="70,200 130,90 175,150 220,110 260,200" fill="var(--terracota)" opacity="0.55"/>
+      <circle cx="215" cy="45" r="18" fill="var(--gold)" opacity="0.8"/>
+    </svg>
+  </div>
+</header>
+
+<section class="alt">
+  <h2>Lo que encuentras en nuestras tiendas</h2>
+  <div class="grid">
+    <div class="item"><h3>Literatura peruana</h3><p>Arguedas, Vallejo, Ribeyro y voces contemporáneas de todas las regiones.</p></div>
+    <div class="item"><h3>Textos escolares</h3><p>Currículo nacional para primaria y secundaria, con descuento por colegios.</p></div>
+    <div class="item"><h3>Ediciones andinas</h3><p>Quechua, historia y tradición oral, en tapa dura y económica.</p></div>
+    <div class="item"><h3>Envíos a provincias</h3><p>Delivery en Lima y encomienda a todas las regiones del Perú.</p></div>
+  </div>
+</section>
+
+<section id="chat">
+  <h2>Pregúntale a nuestro asistente</h2>
+  <p>Toca una pregunta o escribe la tuya con tus propias palabras.</p>
+  <div class="chat-wrap">
+    <div class="faq-list" id="faqList"></div>
+    <div class="chat-panel">
+      <div id="chatLog" style="display:flex;flex-direction:column;gap:.7rem;"></div>
+      <div class="chat-input-row">
+        <input id="chatInput" type="text" placeholder="Escribe tu pregunta..." aria-label="Escribe tu pregunta">
+        <button id="chatSend">Enviar</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="alt" id="contacto">
+  <h2>¿No encontraste tu respuesta?</h2>
+  <p>Cuéntanos qué necesitas. Al enviar, se abrirá WhatsApp o tu correo con el mensaje ya escrito para Manuel.</p>
+  <form class="contact" id="contactForm">
+    <input id="cName" type="text" placeholder="Tu nombre" required>
+    <textarea id="cMsg" rows="4" placeholder="Tu mensaje o pregunta" required></textarea>
+    <div class="send-row">
+      <button type="button" class="wa" id="sendWA">Enviar por WhatsApp</button>
+      <button type="button" class="mail" id="sendMail">Enviar por correo</button>
+    </div>
+    <p class="hint">Se envía desde tu propio WhatsApp o correo con un clic — no guardamos tu mensaje en esta página.</p>
+  </form>
+</section>
+
+<footer>
+  Librerías Andinas · Lima, Perú · WhatsApp +51 960 977 650 · manuel.rojas.garay@gmail.com
+</footer>
+
+<script>
+const FAQ = [
+  {q:"¿Cuál es el horario de atención?", a:"Atendemos de lunes a sábado de 10:00 a.m. a 8:00 p.m., y domingos de 10:00 a.m. a 2:00 p.m.", k:["horario","hora","abren","cierran"]},
+  {q:"¿Dónde están ubicados?", a:"Nuestra tienda principal está en Lima; también atendemos pedidos para todo el Perú por delivery y encomienda.", k:["ubicacion","direccion","donde","local"]},
+  {q:"¿Hacen envíos a provincias?", a:"Sí, enviamos a todas las regiones del Perú mediante agencias de encomienda. El costo depende del destino y peso del paquete.", k:["envio","provincia","delivery","encomienda"]},
+  {q:"¿Qué métodos de pago aceptan?", a:"Aceptamos efectivo, tarjetas de débito/crédito, Yape y Plin.", k:["pago","tarjeta","yape","plin","efectivo"]},
+  {q:"¿Tienen libros de autores peruanos?", a:"Sí, contamos con una amplia selección de literatura peruana: Arguedas, Vallejo, Ribeyro y autores contemporáneos.", k:["peruano","autor","literatura","arguedas"]},
+  {q:"¿Venden textos escolares?", a:"Sí, tenemos textos escolares alineados al currículo nacional para primaria y secundaria, con precios especiales para colegios.", k:["escolar","colegio","texto","utiles"]},
+  {q:"¿Puedo reservar o apartar un libro?", a:"Sí, puedes escribirnos por WhatsApp o correo indicando el título y te lo apartamos hasta 48 horas.", k:["reservar","apartar","separar"]},
+  {q:"¿Cuál es la política de devoluciones?", a:"Aceptamos devoluciones dentro de los 7 días de la compra, siempre que el libro esté en su estado original y con el comprobante.", k:["devolucion","cambio","garantia"]},
+  {q:"¿Tienen libros en formato digital?", a:"Por ahora nuestro catálogo es principalmente físico; algunos títulos seleccionados sí tienen versión digital bajo pedido.", k:["digital","ebook","electronico"]},
+  {q:"¿Cómo los contacto directamente?", a:"Puedes escribirnos por WhatsApp al +51 960 977 650 o al correo manuel.rojas.garay@gmail.com.", k:["contacto","whatsapp","correo","telefono"]}
+];
+
+const faqList = document.getElementById('faqList');
+const chatLog = document.getElementById('chatLog');
+
+function addBubble(text, who){
+  const b = document.createElement('div');
+  b.className = 'bubble ' + who;
+  b.textContent = text;
+  chatLog.appendChild(b);
+  chatLog.scrollTop = chatLog.scrollHeight;
+}
+
+FAQ.forEach(item=>{
+  const btn = document.createElement('button');
+  btn.className = 'faq-btn';
+  btn.textContent = item.q;
+  btn.addEventListener('click', ()=>{
+    addBubble(item.q, 'user');
+    addBubble(item.a, 'bot');
+  });
+  faqList.appendChild(btn);
+});
+
+function findAnswer(text){
+  const t = text.toLowerCase();
+  for(const item of FAQ){
+    if(item.k.some(k=>t.includes(k))) return item.a;
+  }
+  return null;
+}
+
+function handleSend(){
+  const input = document.getElementById('chatInput');
+  const val = input.value.trim();
+  if(!val) return;
+  addBubble(val, 'user');
+  const ans = findAnswer(val);
+  addBubble(ans || "No tengo esa respuesta todavía. Escríbenos abajo por WhatsApp o correo y te ayudamos directamente.", 'bot');
+  if(!ans){ document.getElementById('contacto').scrollIntoView({behavior:'smooth'}); }
+  input.value = '';
+}
+
+document.getElementById('chatSend').addEventListener('click', handleSend);
+document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
+
+addBubble("Hola, soy el asistente de Librerías Andinas. Elige una pregunta o escribe la tuya.", 'bot');
+
+// Contact -> WhatsApp / mailto
+document.getElementById('sendWA').addEventListener('click', ()=>{
+  const name = document.getElementById('cName').value.trim() || 'Cliente web';
+  const msg = document.getElementById('cMsg').value.trim();
+  if(!msg){ document.getElementById('cMsg').focus(); return; }
+  const text = encodeURIComponent(`Hola, soy ${name}, escribo desde la web de Librerías Andinas: ${msg}`);
+  window.open(`https://wa.me/51960977650?text=${text}`, '_blank');
+});
+
+document.getElementById('sendMail').addEventListener('click', ()=>{
+  const name = document.getElementById('cName').value.trim() || 'Cliente web';
+  const msg = document.getElementById('cMsg').value.trim();
+  if(!msg){ document.getElementById('cMsg').focus(); return; }
+  const subject = encodeURIComponent('Consulta desde la web - Librerías Andinas');
+  const body = encodeURIComponent(`Nombre: ${name}\n\nMensaje:\n${msg}`);
+  window.location.href = `mailto:manuel.rojas.garay@gmail.com?subject=${subject}&body=${body}`;
+});
+</script>
+</body>
+</html>
