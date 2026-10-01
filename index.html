@@ -15,7 +15,7 @@
     --ink:#24312E; --parchment:#EFE6D8; --gold:#B8862B; --terracota:#935A3C; --verde:#4F6F52; --text:#2A2521;
     --card:#F7F1E5; --border:rgba(42,37,33,.16);
   }
-  html{ scroll-padding-top:env(safe-area-inset-top,0px); }
+  html{ scroll-padding-top:env(safe-area-inset-top,0px); height:100%; }
   *{box-sizing:border-box;}
   body{
     margin:0; background:var(--parchment); color:var(--text);
@@ -31,45 +31,30 @@
   :root[data-theme="dark"] h1, :root[data-theme="dark"] h2, :root[data-theme="dark"] h3{ color:#EAE3D6; }
 
   p{ max-width:60ch; }
+  img,svg.illus{ max-width:100%; display:block; }
+
   header.hero{
     display:flex; flex-wrap:wrap; align-items:center; gap:2rem;
-    padding:3.5rem 6vw 3rem; overflow:hidden; position:relative;
+    padding:3.5rem 6vw 2.5rem; overflow:hidden; position:relative;
   }
   .hero-text{ flex:1 1 320px; z-index:2; }
   .eyebrow{ color:var(--terracota); font-size:.95rem; margin-bottom:.6rem; }
   .hero-text h1{ font-size:clamp(2.1rem,4.5vw,3.4rem); line-height:1.08; }
   .hero-text p{ margin-top:1.1rem; font-size:1.05rem; }
-  .peaks{ flex:0 0 260px; height:200px; position:relative; }
-  .peaks svg{ width:100%; height:100%; }
+  .hero-img{ flex:1 1 320px; min-width:260px; }
   nav{ margin-top:1.6rem; display:flex; gap:1.2rem; flex-wrap:wrap; }
   nav a{ color:var(--verde); text-decoration:none; border-bottom:1px solid var(--border); font-weight:500; }
+
   section{ padding:3rem 6vw; }
   section.alt{ background:var(--card); }
-  .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.4rem; margin-top:1.6rem; }
-  .grid .item{ padding:1.1rem 1.2rem; border-left:3px solid var(--terracota); background:var(--card); }
-  .grid .item h3{ font-size:1.05rem; margin-bottom:.35rem; }
 
-  /* Chatbot */
-  .chat-wrap{ margin-top:1.8rem; display:grid; gap:1.6rem; grid-template-columns:1fr; }
-  @media(min-width:760px){ .chat-wrap{ grid-template-columns:260px 1fr; } }
-  .faq-list{ display:flex; flex-direction:column; gap:.5rem; }
-  .faq-btn{
-    text-align:left; padding:.6rem .8rem; border:1px solid var(--border); background:var(--card);
-    color:var(--text); border-radius:2px; cursor:pointer; font-family:inherit; font-size:.92rem;
-  }
-  .faq-btn:hover{ border-color:var(--terracota); }
-  .faq-btn:focus-visible{ outline:2px solid var(--gold); outline-offset:2px; }
-  .chat-panel{ background:var(--card); border:1px solid var(--border); padding:1.2rem 1.3rem; min-height:220px; display:flex; flex-direction:column; gap:.7rem; }
-  .bubble{ padding:.7rem .9rem; border-radius:2px; max-width:44ch; }
-  .bubble.user{ align-self:flex-end; background:var(--verde); color:#fff; }
-  .bubble.bot{ align-self:flex-start; background:var(--parchment); border:1px solid var(--border); }
-  .chat-input-row{ margin-top:auto; display:flex; gap:.5rem; }
-  .chat-input-row input{
-    flex:1; padding:.6rem .8rem; border:1px solid var(--border); background:transparent; color:var(--text); font-family:inherit;
-  }
-  .chat-input-row button{
-    padding:.6rem 1rem; background:var(--ink); color:#EFE6D8; border:none; cursor:pointer; font-family:inherit;
-  }
+  .shelf-strip{ margin-top:1.8rem; overflow-x:auto; border:1px solid var(--border); background:var(--card); }
+  .shelf-strip svg{ display:block; min-width:640px; width:100%; height:120px; }
+
+  .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.4rem; margin-top:1.6rem; }
+  .grid .item{ padding:1.1rem 1.2rem 1.3rem; border:1px solid var(--border); background:var(--card); }
+  .grid .item .cover{ width:64px; height:88px; margin-bottom:.7rem; }
+  .grid .item h3{ font-size:1.05rem; margin-bottom:.35rem; }
 
   /* Contact */
   form.contact{ margin-top:1.6rem; display:flex; flex-direction:column; gap:.9rem; max-width:480px; }
@@ -78,13 +63,41 @@
     font-family:inherit; font-size:.98rem; resize:vertical;
   }
   .send-row{ display:flex; gap:.8rem; flex-wrap:wrap; }
-  .send-row button{
-    padding:.65rem 1.1rem; border:none; cursor:pointer; font-family:inherit; font-weight:500; color:#fff;
-  }
+  .send-row button{ padding:.65rem 1.1rem; border:none; cursor:pointer; font-family:inherit; font-weight:500; color:#fff; }
   .send-row button.wa{ background:var(--verde); }
   .send-row button.mail{ background:var(--terracota); }
   .hint{ font-size:.85rem; opacity:.75; }
   footer{ padding:2rem 6vw 3rem; font-size:.9rem; opacity:.8; }
+
+  /* Floating chat button + widget */
+  #chatFab{
+    position:fixed; right:calc(1.4rem + env(safe-area-inset-right,0px)); bottom:calc(1.4rem + env(safe-area-inset-bottom,0px));
+    width:58px; height:58px; border-radius:50%; background:var(--ink); border:none; cursor:pointer;
+    display:flex; align-items:center; justify-content:center; box-shadow:0 6px 18px rgba(0,0,0,.28); z-index:60;
+  }
+  #chatFab svg{ width:26px; height:26px; }
+  #chatWindow{
+    position:fixed; right:calc(1.4rem + env(safe-area-inset-right,0px)); bottom:calc(5.4rem + env(safe-area-inset-bottom,0px));
+    width:min(340px, 88vw); max-height:min(70vh,520px); background:var(--card); border:1px solid var(--border);
+    box-shadow:0 12px 32px rgba(0,0,0,.3); z-index:59; display:none; flex-direction:column; overflow:hidden;
+  }
+  #chatWindow.open{ display:flex; }
+  .chat-head{ background:var(--ink); color:#EFE6D8; padding:.8rem 1rem; display:flex; align-items:center; justify-content:space-between; }
+  .chat-head strong{ font-family:'Fraunces',serif; font-size:1rem; }
+  .chat-head button{ background:none; border:none; color:#EFE6D8; font-size:1.1rem; cursor:pointer; }
+  .chat-body{ flex:1; overflow-y:auto; padding:.9rem 1rem; display:flex; flex-direction:column; gap:.6rem; }
+  .faq-list{ display:flex; flex-direction:column; gap:.4rem; }
+  .faq-btn{
+    text-align:left; padding:.5rem .7rem; border:1px solid var(--border); background:var(--parchment);
+    color:var(--text); cursor:pointer; font-family:inherit; font-size:.85rem;
+  }
+  .faq-btn:hover{ border-color:var(--terracota); }
+  .bubble{ padding:.6rem .8rem; max-width:85%; font-size:.9rem; }
+  .bubble.user{ align-self:flex-end; background:var(--verde); color:#fff; }
+  .bubble.bot{ align-self:flex-start; background:var(--parchment); border:1px solid var(--border); }
+  .chat-input-row{ display:flex; gap:.4rem; padding:.7rem; border-top:1px solid var(--border); }
+  .chat-input-row input{ flex:1; padding:.5rem .6rem; border:1px solid var(--border); background:transparent; color:var(--text); font-family:inherit; font-size:.88rem; }
+  .chat-input-row button{ padding:.5rem .8rem; background:var(--ink); color:#EFE6D8; border:none; cursor:pointer; font-family:inherit; font-size:.85rem; }
 </style>
 </head>
 <body>
@@ -95,45 +108,119 @@
     <h1>Librerías Andinas</h1>
     <p>Libros para la sierra, la costa y la selva: literatura peruana, textos escolares y ediciones andinas, con envíos a todo el país.</p>
     <nav>
-      <a href="#chat">Preguntar al asistente</a>
+      <a href="#tienda">Ver catálogo</a>
       <a href="#contacto">Escribirnos</a>
     </nav>
   </div>
-  <div class="peaks" aria-hidden="true">
-    <svg viewBox="0 0 260 200" xmlns="http://www.w3.org/2000/svg">
-      <polygon points="0,200 60,60 110,140 150,40 210,150 260,90 260,200" fill="var(--ink)" opacity="0.85"/>
-      <polygon points="70,200 130,90 175,150 220,110 260,200" fill="var(--terracota)" opacity="0.55"/>
-      <circle cx="215" cy="45" r="18" fill="var(--gold)" opacity="0.8"/>
+  <div class="hero-img" aria-hidden="true">
+    <svg class="illus" viewBox="0 0 340 260" xmlns="http://www.w3.org/2000/svg">
+      <polygon points="0,260 70,110 130,190 190,80 250,200 310,130 340,170 340,260" fill="var(--ink)" opacity="0.9"/>
+      <polygon points="90,260 160,150 210,210 260,160 320,260" fill="var(--terracota)" opacity="0.55"/>
+      <circle cx="280" cy="60" r="20" fill="var(--gold)" opacity="0.85"/>
+      <rect x="30" y="205" width="280" height="14" fill="var(--card)"/>
+      <rect x="34" y="176" width="14" height="30" fill="#B8862B"/>
+      <rect x="50" y="168" width="12" height="38" fill="#935A3C"/>
+      <rect x="64" y="180" width="16" height="26" fill="#4F6F52"/>
+      <rect x="82" y="172" width="12" height="34" fill="#7A6A9C"/>
+      <rect x="96" y="185" width="14" height="21" fill="#B8862B"/>
+      <rect x="240" y="174" width="13" height="32" fill="#4F6F52"/>
+      <rect x="255" y="182" width="15" height="24" fill="#935A3C"/>
+      <rect x="272" y="170" width="12" height="36" fill="#B8862B"/>
+      <rect x="286" y="180" width="14" height="26" fill="#7A6A9C"/>
     </svg>
   </div>
 </header>
 
-<section class="alt">
-  <h2>Lo que encuentras en nuestras tiendas</h2>
-  <div class="grid">
-    <div class="item"><h3>Literatura peruana</h3><p>Arguedas, Vallejo, Ribeyro y voces contemporáneas de todas las regiones.</p></div>
-    <div class="item"><h3>Textos escolares</h3><p>Currículo nacional para primaria y secundaria, con descuento por colegios.</p></div>
-    <div class="item"><h3>Ediciones andinas</h3><p>Quechua, historia y tradición oral, en tapa dura y económica.</p></div>
-    <div class="item"><h3>Envíos a provincias</h3><p>Delivery en Lima y encomienda a todas las regiones del Perú.</p></div>
+<section id="tienda" class="alt">
+  <h2>Nuestra estantería</h2>
+  <p>Una muestra de lo que encuentras al visitarnos — ilustración referencial de la tienda.</p>
+  <div class="shelf-strip" aria-hidden="true">
+    <svg viewBox="0 0 900 120" preserveAspectRatio="xMinYMid meet" xmlns="http://www.w3.org/2000/svg">
+      <rect x="0" y="100" width="900" height="8" fill="var(--terracota)"/>
+      <!-- repeated book spines -->
+      <g>
+<rect x="12" y="22" width="14" height="78" fill="#935A3C"/>
+<rect x="29" y="30" width="16" height="70" fill="#B8862B"/>
+<rect x="48" y="4" width="10" height="96" fill="#4F6F52"/>
+<rect x="61" y="14" width="10" height="86" fill="#24312E"/>
+<rect x="74" y="4" width="10" height="96" fill="#7A6A9C"/>
+<rect x="87" y="30" width="12" height="70" fill="#B8862B"/>
+<rect x="102" y="8" width="10" height="92" fill="#935A3C"/>
+<rect x="115" y="30" width="16" height="70" fill="#4F6F52"/>
+<rect x="134" y="30" width="12" height="70" fill="#935A3C"/>
+<rect x="149" y="30" width="16" height="70" fill="#B8862B"/>
+<rect x="168" y="22" width="10" height="78" fill="#4F6F52"/>
+<rect x="181" y="4" width="10" height="96" fill="#24312E"/>
+<rect x="194" y="30" width="16" height="70" fill="#7A6A9C"/>
+<rect x="213" y="30" width="12" height="70" fill="#B8862B"/>
+<rect x="228" y="14" width="12" height="86" fill="#935A3C"/>
+<rect x="243" y="22" width="16" height="78" fill="#4F6F52"/>
+<rect x="262" y="4" width="10" height="96" fill="#935A3C"/>
+<rect x="275" y="4" width="14" height="96" fill="#B8862B"/>
+<rect x="292" y="30" width="12" height="70" fill="#4F6F52"/>
+<rect x="307" y="14" width="12" height="86" fill="#24312E"/>
+<rect x="322" y="4" width="10" height="96" fill="#7A6A9C"/>
+<rect x="335" y="4" width="10" height="96" fill="#B8862B"/>
+<rect x="348" y="4" width="10" height="96" fill="#935A3C"/>
+<rect x="361" y="8" width="12" height="92" fill="#4F6F52"/>
+<rect x="376" y="14" width="16" height="86" fill="#935A3C"/>
+<rect x="395" y="4" width="16" height="96" fill="#B8862B"/>
+<rect x="414" y="14" width="16" height="86" fill="#4F6F52"/>
+<rect x="433" y="22" width="14" height="78" fill="#24312E"/>
+<rect x="450" y="22" width="12" height="78" fill="#7A6A9C"/>
+<rect x="465" y="4" width="10" height="96" fill="#B8862B"/>
+<rect x="478" y="4" width="14" height="96" fill="#935A3C"/>
+<rect x="495" y="14" width="16" height="86" fill="#4F6F52"/>
+<rect x="514" y="14" width="16" height="86" fill="#935A3C"/>
+<rect x="533" y="30" width="10" height="70" fill="#B8862B"/>
+<rect x="546" y="22" width="16" height="78" fill="#4F6F52"/>
+<rect x="565" y="22" width="14" height="78" fill="#24312E"/>
+<rect x="582" y="8" width="16" height="92" fill="#7A6A9C"/>
+<rect x="601" y="30" width="10" height="70" fill="#B8862B"/>
+<rect x="614" y="14" width="14" height="86" fill="#935A3C"/>
+<rect x="631" y="4" width="14" height="96" fill="#4F6F52"/>
+<rect x="648" y="4" width="16" height="96" fill="#935A3C"/>
+<rect x="667" y="30" width="16" height="70" fill="#B8862B"/>
+<rect x="686" y="14" width="10" height="86" fill="#4F6F52"/>
+<rect x="699" y="30" width="16" height="70" fill="#24312E"/>
+<rect x="718" y="14" width="10" height="86" fill="#7A6A9C"/>
+<rect x="731" y="14" width="16" height="86" fill="#B8862B"/>
+      </g>
+    </svg>
   </div>
 </section>
 
-<section id="chat">
-  <h2>Pregúntale a nuestro asistente</h2>
-  <p>Toca una pregunta o escribe la tuya con tus propias palabras.</p>
-  <div class="chat-wrap">
-    <div class="faq-list" id="faqList"></div>
-    <div class="chat-panel">
-      <div id="chatLog" style="display:flex;flex-direction:column;gap:.7rem;"></div>
-      <div class="chat-input-row">
-        <input id="chatInput" type="text" placeholder="Escribe tu pregunta..." aria-label="Escribe tu pregunta">
-        <button id="chatSend">Enviar</button>
-      </div>
+<section class="alt">
+  <h2>Lo que encuentras en nuestras tiendas</h2>
+  <div class="grid">
+    <div class="item">
+      <svg class="cover" viewBox="0 0 64 88" xmlns="http://www.w3.org/2000/svg">
+        <rect width="64" height="88" fill="#935A3C"/><rect x="6" y="10" width="52" height="3" fill="#EFE6D8"/><rect x="6" y="18" width="34" height="3" fill="#EFE6D8"/><rect x="6" y="70" width="30" height="3" fill="#B8862B"/>
+      </svg>
+      <h3>Literatura peruana</h3><p>Arguedas, Vallejo, Ribeyro y voces contemporáneas de todas las regiones.</p>
+    </div>
+    <div class="item">
+      <svg class="cover" viewBox="0 0 64 88" xmlns="http://www.w3.org/2000/svg">
+        <rect width="64" height="88" fill="#4F6F52"/><rect x="6" y="10" width="40" height="3" fill="#EFE6D8"/><rect x="6" y="18" width="52" height="3" fill="#EFE6D8"/><rect x="6" y="70" width="30" height="3" fill="#EFE6D8"/>
+      </svg>
+      <h3>Textos escolares</h3><p>Currículo nacional para primaria y secundaria, con descuento por colegios.</p>
+    </div>
+    <div class="item">
+      <svg class="cover" viewBox="0 0 64 88" xmlns="http://www.w3.org/2000/svg">
+        <rect width="64" height="88" fill="#B8862B"/><rect x="6" y="10" width="44" height="3" fill="#24312E"/><rect x="6" y="18" width="36" height="3" fill="#24312E"/><rect x="6" y="70" width="30" height="3" fill="#24312E"/>
+      </svg>
+      <h3>Ediciones andinas</h3><p>Quechua, historia y tradición oral, en tapa dura y económica.</p>
+    </div>
+    <div class="item">
+      <svg class="cover" viewBox="0 0 64 88" xmlns="http://www.w3.org/2000/svg">
+        <rect width="64" height="88" fill="#7A6A9C"/><rect x="6" y="10" width="30" height="3" fill="#EFE6D8"/><rect x="6" y="18" width="48" height="3" fill="#EFE6D8"/><rect x="6" y="70" width="30" height="3" fill="#EFE6D8"/>
+      </svg>
+      <h3>Envíos a provincias</h3><p>Delivery en Lima y encomienda a todas las regiones del Perú.</p>
     </div>
   </div>
 </section>
 
-<section class="alt" id="contacto">
+<section id="contacto">
   <h2>¿No encontraste tu respuesta?</h2>
   <p>Cuéntanos qué necesitas. Al enviar, se abrirá WhatsApp o tu correo con el mensaje ya escrito para Manuel.</p>
   <form class="contact" id="contactForm">
@@ -151,6 +238,24 @@
   Librerías Andinas · Lima, Perú · WhatsApp +51 960 977 650 · manuel.rojas.garay@gmail.com
 </footer>
 
+<button id="chatFab" aria-label="Abrir chat">
+  <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M4 4h16v12H8l-4 4V4z" fill="#EFE6D8"/></svg>
+</button>
+<div id="chatWindow">
+  <div class="chat-head">
+    <strong>Asistente Andinas</strong>
+    <button id="chatClose" aria-label="Cerrar">✕</button>
+  </div>
+  <div class="chat-body" id="chatBody">
+    <div class="faq-list" id="faqList"></div>
+    <div id="chatLog" style="display:flex;flex-direction:column;gap:.5rem;margin-top:.4rem;"></div>
+  </div>
+  <div class="chat-input-row">
+    <input id="chatInput" type="text" placeholder="Escribe tu pregunta..." aria-label="Escribe tu pregunta">
+    <button id="chatSend">Enviar</button>
+  </div>
+</div>
+
 <script>
 const FAQ = [
   {q:"¿Cuál es el horario de atención?", a:"Atendemos de lunes a sábado de 10:00 a.m. a 8:00 p.m., y domingos de 10:00 a.m. a 2:00 p.m.", k:["horario","hora","abren","cierran"]},
@@ -167,13 +272,15 @@ const FAQ = [
 
 const faqList = document.getElementById('faqList');
 const chatLog = document.getElementById('chatLog');
+const chatBody = document.getElementById('chatBody');
+const chatWindow = document.getElementById('chatWindow');
 
 function addBubble(text, who){
   const b = document.createElement('div');
   b.className = 'bubble ' + who;
   b.textContent = text;
   chatLog.appendChild(b);
-  chatLog.scrollTop = chatLog.scrollHeight;
+  chatBody.scrollTop = chatBody.scrollHeight;
 }
 
 FAQ.forEach(item=>{
@@ -201,15 +308,20 @@ function handleSend(){
   if(!val) return;
   addBubble(val, 'user');
   const ans = findAnswer(val);
-  addBubble(ans || "No tengo esa respuesta todavía. Escríbenos abajo por WhatsApp o correo y te ayudamos directamente.", 'bot');
-  if(!ans){ document.getElementById('contacto').scrollIntoView({behavior:'smooth'}); }
+  addBubble(ans || "No tengo esa respuesta todavía. Escríbenos por WhatsApp o correo y te ayudamos directamente.", 'bot');
   input.value = '';
 }
 
 document.getElementById('chatSend').addEventListener('click', handleSend);
 document.getElementById('chatInput').addEventListener('keydown', e=>{ if(e.key==='Enter') handleSend(); });
 
-addBubble("Hola, soy el asistente de Librerías Andinas. Elige una pregunta o escribe la tuya.", 'bot');
+document.getElementById('chatFab').addEventListener('click', ()=>{
+  chatWindow.classList.toggle('open');
+  if(chatWindow.classList.contains('open') && chatLog.children.length===0){
+    addBubble("Hola, soy el asistente de Librerías Andinas. Elige una pregunta o escribe la tuya.", 'bot');
+  }
+});
+document.getElementById('chatClose').addEventListener('click', ()=> chatWindow.classList.remove('open'));
 
 // Contact -> WhatsApp / mailto
 document.getElementById('sendWA').addEventListener('click', ()=>{
@@ -231,3 +343,4 @@ document.getElementById('sendMail').addEventListener('click', ()=>{
 </script>
 </body>
 </html>
+
